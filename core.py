@@ -3,14 +3,15 @@ import subprocess, json, logging
 '''
 Settings
 '''
-CLIENT = 'namecoin/namecoind.exe'
+CLIENT  = 'namecoin/namecoind.exe'
+LOG 	= 'pynamecoin.log'
 SAFE_MODE = True
 
 '''
 Logger
 '''
-FORMAT = '%(asctime)-15s %(message)s'
-logging.basicConfig(format=FORMAT)
+FORMAT = '%(asctime)-15s %(levelname)-8s: %(message)s'
+logging.basicConfig(format=FORMAT, level=logging.INFO, filename=LOG)
 
 '''
 ServerException is issued when server returns errors
@@ -49,15 +50,44 @@ name_new(name) --
 name_firstupdate(name,rand,value)
 name_update(name,value,to)
 --
-\----> seperate module: namecoin.account
-pynmc
-pynmc.core				-> no wallet
-pynmc.ServerException
-pynmc.account
-pynmc.account.Account
-pynmc.core.Name ?-
+getblock hash 
+getblockbycount height ---
+getblockcount ---
+getblockhash index
+getblocknumber
 '''
 
+'''
+Retrieve the transaction with id txid.
+'''
+def gettransaction(txid):
+	value = nmc_call('gettransaction', [txid]);
+	return value
+	
+'''
+Get the current block number
+'''
+def getblockcount():
+	return nmc_call('getblockcount');
+
+'''
+Get the current mining difficulty
+'''
+def getdifficulty():
+	return nmc_call('getdifficulty');
+
+'''
+Get the current hashrate of the network
+'''	
+def gethashespersec():
+	return nmc_call('gethashespersec');
+
+'''
+Get connection count of the node
+'''
+def getconnectioncount():
+	return nmc_call('getconnectioncount');
+	
 '''
 Validate NMC address
 '''
@@ -114,7 +144,6 @@ def nmc_call(method, args = []):
 	out, err = p.communicate();
 	logger = logging.getLogger('pynmc')
 	logger.info('input: ' + ' '.join(rargs));
-	logger.info('output: ' + str(out));
 	try:
 		ret =  json.loads(out.replace('\r','').replace('\n',''));
 	except Exception as e:
