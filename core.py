@@ -92,9 +92,11 @@ def getconnectioncount():
 Validate NMC address
 '''
 def validate(address):
-	value = nmc_call('validateaddress', [address]);
-	return value['isvalid'] == True;
-	
+	if type(address) is str:
+		value = nmc_call('validateaddress', [address]);
+		return value['isvalid'] == True;
+	else:
+		return False;
 '''
 Scans n number of names alphabetically, starting at start_name
 '''
