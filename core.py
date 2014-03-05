@@ -65,6 +65,16 @@ def gettransaction(txid):
 	return value
 	
 '''
+Return general information about the state of the network. Contains:
+{version, balance, blocks, timeoffset, connections, proxy, 
+	generate, genproclimit, difficulty, hashespersec, testnet,keypoololdest,
+	keypoolsize,paytxfee,mininput,errors}
+'''
+def getinfo():
+	return nmc_call('getinfo');
+
+
+'''
 Get the current block number
 '''
 def getblockcount():
@@ -127,15 +137,6 @@ Return the history (value updates) of the <name>.
 def name_history(name):
 	value = nmc_call('name_history',[name]);
 	return value;
-	
-'''
-Return general information about the state of the network. Contains:
-{version, balance, blocks, timeoffset, connections, proxy, 
-	generate, genproclimit, difficulty, hashespersec, testnet,keypoololdest,
-	keypoolsize,paytxfee,mininput,errors}
-'''
-def getinfo():
-	return nmc_call('getinfo');
 
 '''
 Calls the client with the method and additional args.
