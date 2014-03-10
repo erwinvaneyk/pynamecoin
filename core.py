@@ -1,5 +1,4 @@
 import subprocess, json, logging
-
 '''
 Settings
 '''
@@ -12,14 +11,15 @@ Logger
 '''
 FORMAT = '%(asctime)-15s %(levelname)-8s: %(message)s'
 logging.basicConfig(format=FORMAT, level=logging.INFO, filename=LOG)
+LOGGER = logging.getLogger('pynmc')
+
 
 '''
 ServerException is issued when server returns errors
 '''
 class ServerException(Exception):
 	def __init__(self, value, code=0):
-		logger = logging.getLogger('pynmc')
-		logger.error(value);
+		LOGGER.error(value);
 		self.value = value;
 		self.code = code
 	
@@ -42,28 +42,15 @@ class Pair:
 	
 	def __str__():
 		return str(self.name) + ": " + repr(self.value);
-		
-'''
-Advanced functionality:
---
-name_new(name) --
-name_firstupdate(name,rand,value)
-name_update(name,value,to)
---
-getblock hash 
-getblockbycount height ---
-getblockcount ---
-getblockhash index
-getblocknumber
-'''
 
 '''
 Retrieve the transaction with id txid.
-'''
+
 def gettransaction(txid):
 	value = nmc_call('gettransaction', [str(txid)]);
 	return value
-	
+'''	
+
 '''
 Return general information about the state of the network. Contains:
 {version, balance, blocks, timeoffset, connections, proxy, 
@@ -112,7 +99,7 @@ Scans n number of names alphabetically, starting at start_name
 '''
 def name_scan(start_name, count):
 	assert count > 0
-	return nmc_call('name_scan', [start_name, str(count)]);
+	return nmc_call('name_scan', [(start_name), str(count)]);
 
 '''
 Retrieve names matching the regex (and additional parameters
@@ -123,7 +110,7 @@ def name_filter(regex, maxage=36000, minage=0, count=0, stat = False):
 	assert maxage >= 0;
 	assert count >= 0;
 	stat = 'stat' if stat else None;
-	value = nmc_call('name_filter', [regex, str(maxage), str(minage), str(count)]);
+	value = nmc_call('name_filter', [(regex), str(maxage), str(minage), str(count)]);
 	return value
 	
 '''
@@ -131,7 +118,7 @@ Return the associated value of the <name>, otherwise return None.
 '''
 def name_show(name):
 	try:
-		value = nmc_call('name_show',[name]);
+		value = nmc_call('name_show',[(name)]);
 	except:
 		value = None;
 	return value;
@@ -141,7 +128,7 @@ Return the history (value updates) of the <name>.
 '''
 def name_history(name):
 	try:
-		value = nmc_call('name_history',[name]);
+		value = nmc_call('name_history',[(name)]);
 	except:
 		value = None;
 	return value;
@@ -149,18 +136,12 @@ def name_history(name):
 '''
 Calls the client with the method and additional args.
 '''
-def nmc_call(method, args = [], debug = False):
+def nmc_call(method, args = []):
 	rargs = [CLIENT,method] + args;
 	p = subprocess.Popen(rargs,stdout=subprocess.PIPE,stderr=subprocess.PIPE);
 	out, err = p.communicate();
-	logger = logging.getLogger('pynmc')
-	logger.info('input: ' + ' '.join(rargs));
-	if debug: 
-		print repr('out: ' + out);
-		print repr('err: ' + err);
+	LOGGER.info('input: ' + ' '.join(rargs));
 	if err:
-		errjson = err[7:];
-		err =  json.loads(errjson.replace('\r','').replace('\n',''));
 		raise ServerException(str(err['message']), str(err['code']));
 	try:
 		ret =  json.loads(out.replace('\r','').replace('\n',''));

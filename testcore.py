@@ -141,11 +141,9 @@ class TestCore(unittest.TestCase):
 		regex = 'test'
 		val = core.name_filter(regex, maxage=10, minage=10);
 		self.assertEquals(val, []);
-
+	'''
 	def test_gettransaction(self):
-		txid = core.name_show('test');
-		txid = txid['txid'];
-		val = core.gettransaction(txid);
+		val = core.gettransaction('6cce69f22841439b40bd576d15c46ec6d60ad44e1d604b51049ecebd011b53d4');
 		self.assertEquals(val, None); 
 		
 	def test_gettransaction_nonexisting(self):
@@ -157,6 +155,6 @@ class TestCore(unittest.TestCase):
 		with self.assertRaises(Exception):
 			txid = None;
 			val = core.gettransaction(txid);
-	
+	'''
 if __name__ == '__main__':
     unittest.main()
