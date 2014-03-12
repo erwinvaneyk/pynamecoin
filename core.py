@@ -45,11 +45,10 @@ class Pair:
 
 '''
 Retrieve the transaction with id txid.
-
+'''
 def gettransaction(txid):
 	value = nmc_call('gettransaction', [str(txid)]);
 	return value
-'''	
 
 '''
 Return general information about the state of the network. Contains:
