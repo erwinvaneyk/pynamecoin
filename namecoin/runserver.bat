@@ -1,1 +1,0 @@
-namecoind.exe
