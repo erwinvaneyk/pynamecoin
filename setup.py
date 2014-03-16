@@ -6,7 +6,7 @@ setup(
     author='Erwin van Eyk',
     author_email='erwinvaneyk@gmail.com',
     packages=['pynamecoin', 'pynamecoin.test'],
-    scripts=['bin/namecoin/namecoind.exe','bin/pynamecoin_example.py'],
+    scripts=['bin/runserver.py','bin/pynamecoin_example.py'],
     url='...',
     license='LICENSE',
     description='A Python wrapper for the Namecoin (NMC) client API',
