@@ -1,6 +1,6 @@
 PyNamecoin
 ===========
-A Python wrapper for the Namecoin (NMC) API, using the standard Namecoin-client.
+A Python wrapper for the Namecoin (NMC) API, using the standard Namecoin-client, without the use of the RPC-client. I would recommend using the RPC-client. This library is for those not wanting to use RPC or seeking a lightweight, ready-to-go Namecoin library.
 
 Installation
 -----------
